@@ -12,7 +12,7 @@ import net.spdysgr.sectionedview.databinding.FragmentHomeBinding
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
-    private lateinit var viewBinding: ViewBinding
+    private lateinit var homeViewBinding: FragmentHomeBinding
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -22,8 +22,8 @@ class HomeFragment : Fragment() {
         homeViewModel =
                 ViewModelProvider(this).get(HomeViewModel::class.java)
 
-        viewBinding = FragmentHomeBinding.inflate(inflater, container, false)
+        homeViewBinding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        return viewBinding.root
+        return homeViewBinding.root
     }
 }
