@@ -23,7 +23,7 @@ abstract class SectionedRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.V
         }
 
         fun getItemCountInContent(): Int {
-            return sectionContent?.let{ it.getItemCount() } ?: 0
+            return sectionContent?.getItemCount() ?: 0
         }
 
         fun hasFooter(): Boolean {
