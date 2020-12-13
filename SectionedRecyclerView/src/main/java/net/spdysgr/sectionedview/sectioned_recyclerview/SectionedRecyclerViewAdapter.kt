@@ -1,5 +1,6 @@
 package net.spdysgr.sectionedview.sectioned_recyclerview
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
@@ -34,7 +35,7 @@ abstract class SectionedRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.V
 
     interface BaseSectionElement {
         fun bindViewHolder(holder: RecyclerView.ViewHolder, sectionNumber:Int, positionInSection: Int?) {}
-        fun createViewHolder(): RecyclerView.ViewHolder
+        fun createViewHolder(viewGroup: ViewGroup): RecyclerView.ViewHolder
     }
 
     abstract class SectionHeader: BaseSectionElement {
@@ -62,7 +63,7 @@ abstract class SectionedRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.V
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val sectionElement = viewTypeAndSectionElementMapping[viewType]
-        return sectionElement.createViewHolder()
+        return sectionElement.createViewHolder(parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -76,7 +77,7 @@ abstract class SectionedRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.V
 
     override fun getItemCount(): Int {
         var positionCnt = 0
-        for(sectionNumber in (0..sectionList.size)) {
+        for(sectionNumber in (0 until sectionList.size)) {
             if (hasHeader(sectionNumber)) {
                 positionCnt++
             }
@@ -110,7 +111,7 @@ abstract class SectionedRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.V
 
     private fun getViewTypeAsSectionElement(position: Int): BaseSectionElement? {
         var positionCnt = 0
-        for(sectionNumber in (0..sectionList.size)) {
+        for(sectionNumber in (0 until sectionList.size)) {
             if (hasHeader(sectionNumber)) {
                 if (positionCnt == position) {
                     return sectionList[sectionNumber].header
@@ -136,7 +137,7 @@ abstract class SectionedRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.V
 
     private fun getSectionNumber(position: Int): Int? {
         var positionCnt = 0
-        for(sectionNumber in (0..sectionList.size)) {
+        for(sectionNumber in (0 until sectionList.size)) {
             if (hasHeader(sectionNumber)) {
                 if (positionCnt == position) {
                     return sectionNumber
@@ -162,7 +163,7 @@ abstract class SectionedRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.V
 
     private fun getPositionInSection(position: Int): Int? {
         var positionCnt = 0
-        for(sectionNumber in (0..sectionList.size)) {
+        for(sectionNumber in (0 until sectionList.size)) {
             if (hasHeader(sectionNumber)) {
                 if (positionCnt == position) {
                     return null
