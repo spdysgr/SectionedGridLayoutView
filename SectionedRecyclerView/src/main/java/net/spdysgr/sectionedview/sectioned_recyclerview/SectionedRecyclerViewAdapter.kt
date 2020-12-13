@@ -1,8 +1,9 @@
 package net.spdysgr.sectionedview.sectioned_recyclerview
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+
 
 abstract class SectionedRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class Section(
@@ -73,6 +74,13 @@ abstract class SectionedRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.V
 
         sectionNumber ?: return
         sectionElement?.bindViewHolder(holder, sectionNumber, positionInSection)
+
+        if(sectionElement is SectionHeader || sectionElement is SectionFooter) {
+            val layoutParams = holder.itemView.layoutParams
+            if (layoutParams is StaggeredGridLayoutManager.LayoutParams) {
+                layoutParams.isFullSpan = true
+            }
+        }
     }
 
     override fun getItemCount(): Int {
