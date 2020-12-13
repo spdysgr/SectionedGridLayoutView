@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import net.spdysgr.sectionedview.databinding.FragmentHomeBinding
 import net.spdysgr.sectionedview.databinding.FragmentHomeHeaderBinding
 import net.spdysgr.sectionedview.sectioned_recyclerview.SectionedRecyclerViewAdapter
@@ -28,7 +28,7 @@ class HomeFragment : Fragment() {
 
         homeViewBinding = FragmentHomeBinding.inflate(inflater, container, false)
         homeViewBinding.recyclerView.apply {
-            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
             val homeAdapter = HomeAdapter()
             homeAdapter.addSection(SectionedRecyclerViewAdapter.Section(HomeAdapter.HomeSectionHeader(), null, null))
