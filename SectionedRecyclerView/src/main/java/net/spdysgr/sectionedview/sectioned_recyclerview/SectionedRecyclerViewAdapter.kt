@@ -6,36 +6,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 
 abstract class SectionedRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    class Section() {
-        var sectionHeader: SectionHeader? = null
-        var sectionContent: SectionContent? = null
-        var sectionFooter: SectionFooter? = null
-
-        fun hasHeader(): Boolean {
-            return sectionHeader?.let{ true } ?: false
-        }
-
-        fun getItemCountInContent(): Int {
-            return sectionContent?.getItemCount() ?: 0
-        }
-
-        fun hasFooter(): Boolean {
-            return sectionFooter?.let{ true } ?: false
-        }
-
-        fun header(newSectionHeader: SectionHeader) {
-            sectionHeader = newSectionHeader
-        }
-
-        fun content(newSectionContent: SectionContent) {
-            sectionContent = newSectionContent
-        }
-
-        fun footer(newSectionFooter: SectionFooter) {
-            sectionFooter = newSectionFooter
-        }
-    }
-
     private var sectionList: MutableList<Section> = mutableListOf()
     private var viewTypeAndSectionElementMapping: MutableList<BaseSectionElement> = mutableListOf()
 
