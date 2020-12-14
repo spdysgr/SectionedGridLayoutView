@@ -33,7 +33,12 @@ class HomeFragment : Fragment() {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
             val homeAdapter = HomeAdapter()
-            homeAdapter.addSection(SectionedRecyclerViewAdapter.Section(HomeAdapter.HomeSectionHeader(), HomeAdapter.HomeSectionContent(), null))
+            homeAdapter.build {
+                section {
+                    header(HomeAdapter.HomeSectionHeader())
+                    content(HomeAdapter.HomeSectionContent())
+                }
+            }
             adapter = homeAdapter
         }
 

@@ -6,17 +6,10 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 
 abstract class SectionedRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    class Section(
-        private var sectionHeader: SectionHeader?,
-        private var sectionContent: SectionContent?,
-        private var sectionFooter: SectionFooter?
-    ) {
-        var header: SectionHeader? = sectionHeader
-            private set
-        var content: SectionContent? = sectionContent
-            private set
-        var footer: SectionFooter? = sectionFooter
-            private set
+    class Section() {
+        var sectionHeader: SectionHeader? = null
+        var sectionContent: SectionContent? = null
+        var sectionFooter: SectionFooter? = null
 
         fun hasHeader(): Boolean {
             return sectionHeader?.let{ true } ?: false
@@ -28,6 +21,18 @@ abstract class SectionedRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.V
 
         fun hasFooter(): Boolean {
             return sectionFooter?.let{ true } ?: false
+        }
+
+        fun header(newSectionHeader: SectionHeader) {
+            sectionHeader = newSectionHeader
+        }
+
+        fun content(newSectionContent: SectionContent) {
+            sectionContent = newSectionContent
+        }
+
+        fun footer(newSectionFooter: SectionFooter) {
+            sectionFooter = newSectionFooter
         }
     }
 
@@ -49,16 +54,22 @@ abstract class SectionedRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.V
     abstract class SectionFooter: BaseSectionElement() {
     }
 
-    fun addSection(section: Section) {
+    fun build(lambda: SectionedRecyclerViewAdapter.() -> Unit) {
+        lambda()
+    }
+
+    fun section(lambda: Section.() -> Unit) {
+        val section = Section()
         sectionList.add(section)
+        section.lambda()
 
         val registerViewTypeMapping: (BaseSectionElement) -> Unit = { sectionElement ->
             viewTypeAndSectionElementMapping.firstOrNull{ it == sectionElement } ?: viewTypeAndSectionElementMapping.add(sectionElement)
         }
         section.apply {
-            header?.let { registerViewTypeMapping(it) }
-            content?.let { registerViewTypeMapping(it) }
-            footer?.let { registerViewTypeMapping(it) }
+            sectionHeader?.let { registerViewTypeMapping(it) }
+            sectionContent?.let { registerViewTypeMapping(it) }
+            sectionFooter?.let { registerViewTypeMapping(it) }
         }
     }
 
@@ -122,20 +133,20 @@ abstract class SectionedRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.V
         for(sectionNumber in (0 until sectionList.size)) {
             if (hasHeader(sectionNumber)) {
                 if (positionCnt == position) {
-                    return sectionList[sectionNumber].header
+                    return sectionList[sectionNumber].sectionHeader
                 }
                 positionCnt++
             }
 
             val contentCountInSection = getContentCountInSection(sectionNumber)
             if (positionCnt <= position && position < positionCnt + contentCountInSection) {
-                return sectionList[sectionNumber].content
+                return sectionList[sectionNumber].sectionContent
             }
             positionCnt += contentCountInSection
 
             if (hasFooter(sectionNumber)) {
                 if (positionCnt == position) {
-                    return sectionList[sectionNumber].footer
+                    return sectionList[sectionNumber].sectionFooter
                 }
                 positionCnt++
             }
