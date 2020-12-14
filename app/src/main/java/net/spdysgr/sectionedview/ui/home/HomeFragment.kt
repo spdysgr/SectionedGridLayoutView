@@ -32,11 +32,11 @@ class HomeFragment : Fragment() {
         homeViewBinding.recyclerView.apply {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
-            val homeAdapter = HomeAdapter()
+            val homeAdapter = SectionedRecyclerViewAdapter()
             homeAdapter.build {
                 section {
-                    header(HomeAdapter.HomeSectionHeader())
-                    content(HomeAdapter.HomeSectionContent())
+                    header(HomeSectionHeader())
+                    content(HomeSectionContent())
                 }
             }
             adapter = homeAdapter
@@ -45,40 +45,37 @@ class HomeFragment : Fragment() {
         return homeViewBinding.root
     }
 
-    class HomeAdapter: SectionedRecyclerViewAdapter() {
-        class HomeSectionHeaderHolderView(viewBinding: FragmentHomeHeaderBinding): RecyclerView.ViewHolder(viewBinding.root) {
-            val textView: TextView = viewBinding.textView
-        }
-        class HomeSectionHeader: SectionHeader() {
-            override fun bindViewHolder(holder: RecyclerView.ViewHolder, sectionNumber: Int, positionInSection: Int?) {
-                val headerHolder = holder as HomeSectionHeaderHolderView
-                val text = "Header of Section No.$sectionNumber."
-                headerHolder.textView.text = text
-            }
-
-            override fun createViewHolder(viewGroup: ViewGroup): RecyclerView.ViewHolder {
-                return HomeSectionHeaderHolderView(FragmentHomeHeaderBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false))
-            }
+    class HomeSectionHeaderHolderView(viewBinding: FragmentHomeHeaderBinding): RecyclerView.ViewHolder(viewBinding.root) {
+        val viewBinding = viewBinding
+    }
+    inner class HomeSectionHeader: SectionedRecyclerViewAdapter.SectionHeader() {
+        override fun bindViewHolder(holder: RecyclerView.ViewHolder, sectionNumber: Int, positionInSection: Int?) {
+            val headerHolder = holder as HomeSectionHeaderHolderView
+            val text = "Header of Section No.$sectionNumber."
+            headerHolder.viewBinding.textView.text = text
         }
 
-        class HomeSectionCellHolderView(viewBinding: FragmentHomeCellBinding): RecyclerView.ViewHolder(viewBinding.root) {
-            val cellTextView: TextView = viewBinding.cellTextView
-            val cellImageView: ImageView = viewBinding.cellImageView
+        override fun createViewHolder(viewGroup: ViewGroup): RecyclerView.ViewHolder {
+            return HomeSectionHeaderHolderView(FragmentHomeHeaderBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false))
         }
-        class HomeSectionContent: SectionContent() {
-            override fun getItemCount(): Int {
-                return 5
-            }
+    }
 
-            override fun bindViewHolder(holder: RecyclerView.ViewHolder, sectionNumber: Int, positionInSection: Int?) {
-                val cellHolder = holder as HomeSectionCellHolderView
-                val text = "Section No.$sectionNumber, Position $positionInSection"
-                cellHolder.cellTextView.text = text
-            }
+    class HomeSectionCellHolderView(viewBinding: FragmentHomeCellBinding): RecyclerView.ViewHolder(viewBinding.root) {
+        val viewBinding = viewBinding
+    }
+    inner class HomeSectionContent: SectionedRecyclerViewAdapter.SectionContent() {
+        override fun getItemCount(): Int {
+            return 5
+        }
 
-            override fun createViewHolder(viewGroup: ViewGroup): RecyclerView.ViewHolder {
-                return HomeSectionCellHolderView(FragmentHomeCellBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false))
-            }
+        override fun bindViewHolder(holder: RecyclerView.ViewHolder, sectionNumber: Int, positionInSection: Int?) {
+            val cellHolder = holder as HomeSectionCellHolderView
+            val text = "Section No.$sectionNumber, Position $positionInSection"
+            cellHolder.viewBinding.cellTextView.text = text
+        }
+
+        override fun createViewHolder(viewGroup: ViewGroup): RecyclerView.ViewHolder {
+            return HomeSectionCellHolderView(FragmentHomeCellBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false))
         }
     }
 }
