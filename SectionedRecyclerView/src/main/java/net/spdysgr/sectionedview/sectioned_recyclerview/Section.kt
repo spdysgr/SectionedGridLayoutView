@@ -1,7 +1,6 @@
 package net.spdysgr.sectionedview.sectioned_recyclerview
 
-
-class Section() {
+class Section {
     var sectionHeader: SectionedRecyclerViewAdapter.SectionHeader? = null
     var sectionContent: SectionedRecyclerViewAdapter.SectionContent? = null
     var sectionFooter: SectionedRecyclerViewAdapter.SectionFooter? = null

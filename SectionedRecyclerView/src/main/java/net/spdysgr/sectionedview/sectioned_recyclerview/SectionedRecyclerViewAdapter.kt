@@ -4,7 +4,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
-
 abstract class SectionedRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var sectionList: MutableList<Section> = mutableListOf()
     private var viewTypeAndSectionElementMapping: MutableList<BaseSectionElement> = mutableListOf()
@@ -14,15 +13,13 @@ abstract class SectionedRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.V
         abstract fun createViewHolder(viewGroup: ViewGroup): RecyclerView.ViewHolder
     }
 
-    abstract class SectionHeader: BaseSectionElement() {
-    }
+    abstract class SectionHeader: BaseSectionElement()
 
     abstract class SectionContent: BaseSectionElement() {
         abstract fun getItemCount(): Int
     }
 
-    abstract class SectionFooter: BaseSectionElement() {
-    }
+    abstract class SectionFooter: BaseSectionElement()
 
     fun build(lambda: SectionedRecyclerViewAdapter.() -> Unit) {
         lambda()
