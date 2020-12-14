@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -50,9 +48,10 @@ class HomeFragment : Fragment() {
     }
     inner class HomeSectionHeader: SectionedRecyclerViewAdapter.SectionHeader() {
         override fun bindViewHolder(holder: RecyclerView.ViewHolder, sectionNumber: Int, positionInSection: Int?) {
-            val headerHolder = holder as HomeSectionHeaderHolderView
-            val text = "Header of Section No.$sectionNumber."
-            headerHolder.viewBinding.textView.text = text
+            if(holder is HomeSectionHeaderHolderView) {
+                val text = "Header of Section No.$sectionNumber."
+                holder.viewBinding.textView.text = text
+            }
         }
 
         override fun createViewHolder(viewGroup: ViewGroup): RecyclerView.ViewHolder {
@@ -69,9 +68,10 @@ class HomeFragment : Fragment() {
         }
 
         override fun bindViewHolder(holder: RecyclerView.ViewHolder, sectionNumber: Int, positionInSection: Int?) {
-            val cellHolder = holder as HomeSectionCellHolderView
-            val text = "Section No.$sectionNumber, Position $positionInSection"
-            cellHolder.viewBinding.cellTextView.text = text
+            if(holder is HomeSectionCellHolderView) {
+                val text = "Section No.$sectionNumber, Position $positionInSection"
+                holder.viewBinding.cellTextView.text = text
+            }
         }
 
         override fun createViewHolder(viewGroup: ViewGroup): RecyclerView.ViewHolder {
