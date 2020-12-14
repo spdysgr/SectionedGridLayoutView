@@ -43,8 +43,7 @@ class HomeFragment : Fragment() {
         return homeViewBinding.root
     }
 
-    class HomeSectionHeaderHolderView(viewBinding: FragmentHomeHeaderBinding): RecyclerView.ViewHolder(viewBinding.root) {
-        val viewBinding = viewBinding
+    class HomeSectionHeaderHolderView(val viewBinding: FragmentHomeHeaderBinding): RecyclerView.ViewHolder(viewBinding.root) {
     }
     inner class HomeSectionHeader: SectionedRecyclerViewAdapter.SectionHeader() {
         override fun bindViewHolder(holder: RecyclerView.ViewHolder, sectionNumber: Int, positionInSection: Int?) {
@@ -59,8 +58,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    class HomeSectionCellHolderView(viewBinding: FragmentHomeCellBinding): RecyclerView.ViewHolder(viewBinding.root) {
-        val viewBinding = viewBinding
+    class HomeSectionCellHolderView(val viewBinding: FragmentHomeCellBinding): RecyclerView.ViewHolder(viewBinding.root) {
     }
     inner class HomeSectionContent: SectionedRecyclerViewAdapter.SectionContent() {
         override fun getItemCount(): Int {
