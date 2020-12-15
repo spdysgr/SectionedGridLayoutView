@@ -34,7 +34,8 @@ class HomeFragment : Fragment() {
             homeAdapter.build {
                 section {
                     header(HomeSectionHeader())
-                    content(HomeSectionContent())
+                    contentHandler(HomeSectionContentHandler())
+                    cell(HomeSectionContentCell())
                 }
             }
             adapter = homeAdapter
@@ -57,21 +58,27 @@ class HomeFragment : Fragment() {
         }
     }
 
-    class HomeSectionCellHolderView(val viewBinding: FragmentHomeCellBinding): RecyclerView.ViewHolder(viewBinding.root)
-    inner class HomeSectionContent: SectionedRecyclerViewAdapter.SectionContent() {
-        override fun getItemCount(): Int {
-            return 5
-        }
-
+    class HomeSectionContentCellHolderView(val viewBinding: FragmentHomeCellBinding): RecyclerView.ViewHolder(viewBinding.root)
+    inner class HomeSectionContentCell: SectionedRecyclerViewAdapter.SectionContentCell() {
         override fun bindViewHolder(holder: RecyclerView.ViewHolder, sectionNumber: Int, positionInSection: Int?) {
-            if(holder is HomeSectionCellHolderView) {
+            if(holder is HomeSectionContentCellHolderView) {
                 val text = "Section No.$sectionNumber, Position $positionInSection"
                 holder.viewBinding.cellTextView.text = text
             }
         }
 
         override fun createViewHolder(viewGroup: ViewGroup): RecyclerView.ViewHolder {
-            return HomeSectionCellHolderView(FragmentHomeCellBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false))
+            return HomeSectionContentCellHolderView(FragmentHomeCellBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false))
+        }
+    }
+
+    inner class HomeSectionContentHandler: SectionedRecyclerViewAdapter.SectionContentHandler() {
+        override fun getItemCount(): Int {
+            return 5
+        }
+
+        override fun getContentCellJavaClassName(sectionNumber: Int, positionInSection: Int): String {
+            return HomeSectionContentCell::class.java.name
         }
     }
 }

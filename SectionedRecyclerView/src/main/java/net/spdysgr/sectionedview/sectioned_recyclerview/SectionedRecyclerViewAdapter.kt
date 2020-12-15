@@ -14,12 +14,13 @@ class SectionedRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     abstract class SectionHeader: BaseSectionElement()
-
-    abstract class SectionContent: BaseSectionElement() {
-        abstract fun getItemCount(): Int
-    }
-
+    abstract class SectionContentCell: BaseSectionElement()
     abstract class SectionFooter: BaseSectionElement()
+
+    abstract class SectionContentHandler {
+        abstract fun getItemCount(): Int
+        abstract fun getContentCellJavaClassName(sectionNumber: Int, positionInSection: Int): String
+    }
 
     fun build(lambda: SectionedRecyclerViewAdapter.() -> Unit) {
         lambda()
@@ -35,7 +36,7 @@ class SectionedRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder
         }
         section.apply {
             sectionHeader?.let { registerViewTypeMapping(it) }
-            sectionContent?.let { registerViewTypeMapping(it) }
+            sectionContentCellList.forEach { registerViewTypeMapping(it) }
             sectionFooter?.let { registerViewTypeMapping(it) }
         }
     }
@@ -78,10 +79,10 @@ class SectionedRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     override fun getItemViewType(position: Int): Int {
-        return getViewTypeAsInt(position) ?: -1 // TODO -1 isn't special value
+        return getViewTypeAsInt(position)
     }
 
-    private fun getViewTypeAsInt(position: Int): Int? {
+    private fun getViewTypeAsInt(position: Int): Int {
         return viewTypeAndSectionElementMapping.indexOf(getViewTypeAsSectionElement(position))
     }
 
@@ -107,7 +108,10 @@ class SectionedRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder
 
             val contentCountInSection = getContentCountInSection(sectionNumber)
             if (positionCnt <= position && position < positionCnt + contentCountInSection) {
-                return sectionList[sectionNumber].sectionContent
+                val sectionContentHandler = sectionList[sectionNumber].sectionContentHandler
+                sectionContentHandler ?: return null
+                return sectionList[sectionNumber].getSectionContentCell(
+                    sectionContentHandler.getContentCellJavaClassName(sectionNumber, position - positionCnt))
             }
             positionCnt += contentCountInSection
 
