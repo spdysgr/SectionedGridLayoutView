@@ -1,6 +1,7 @@
 package net.spdysgr.sectionedview.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +12,14 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import net.spdysgr.sectionedview.databinding.FragmentHomeBinding
 import net.spdysgr.sectionedview.databinding.FragmentHomeCellBinding
 import net.spdysgr.sectionedview.databinding.FragmentHomeHeaderBinding
+import net.spdysgr.sectionedview.sectioned_recyclerview.SectionElementClickListener
 import net.spdysgr.sectionedview.sectioned_recyclerview.SectionedRecyclerViewAdapter
 
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var homeViewBinding: FragmentHomeBinding
+    private lateinit var onClickListener: SectionElementClickListener
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -25,6 +28,12 @@ class HomeFragment : Fragment() {
     ): View? {
         homeViewModel =
                 ViewModelProvider(this).get(HomeViewModel::class.java)
+
+        onClickListener = object : SectionElementClickListener {
+            override fun onClick(sectionNumber: Int, positionInSection: Int) {
+                Log.i("HomeFragment", "section:$sectionNumber, position:$positionInSection")
+            }
+        }
 
         homeViewBinding = FragmentHomeBinding.inflate(inflater, container, false)
         homeViewBinding.recyclerView.apply {
@@ -35,7 +44,7 @@ class HomeFragment : Fragment() {
                 section {
                     header(HomeSectionHeader())
                     contentHandler(HomeSectionContentHandler())
-                    cell(HomeSectionContentCell())
+                    cell(HomeSectionContentCell(onClickListener))
                 }
             }
             adapter = homeAdapter
@@ -59,11 +68,20 @@ class HomeFragment : Fragment() {
     }
 
     class HomeSectionContentCellHolderView(val viewBinding: FragmentHomeCellBinding): RecyclerView.ViewHolder(viewBinding.root)
-    inner class HomeSectionContentCell: SectionedRecyclerViewAdapter.SectionContentCell() {
+    inner class HomeSectionContentCell(private val listener: SectionElementClickListener?): SectionedRecyclerViewAdapter.SectionContentCell() {
         override fun bindViewHolder(holder: RecyclerView.ViewHolder, sectionNumber: Int, positionInSection: Int?) {
             if(holder is HomeSectionContentCellHolderView) {
                 val text = "Section No.$sectionNumber, Position $positionInSection"
                 holder.viewBinding.cellTextView.text = text
+
+                if(listener == null) {
+                    return
+                }
+                holder.viewBinding.root.setOnClickListener {
+                    positionInSection?.let{
+                        listener.onClick(sectionNumber, positionInSection)
+                    }
+                }
             }
         }
 
