@@ -8,20 +8,6 @@ class SectionedRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder
     private var sectionList: MutableList<Section> = mutableListOf()
     private var viewTypeAndSectionElementMapping: MutableList<BaseSectionElement> = mutableListOf()
 
-    abstract class BaseSectionElement {
-        abstract fun bindViewHolder(holder: RecyclerView.ViewHolder, sectionNumber:Int, positionInSection: Int?)
-        abstract fun createViewHolder(viewGroup: ViewGroup): RecyclerView.ViewHolder
-    }
-
-    abstract class SectionHeader: BaseSectionElement()
-    abstract class SectionContentCell: BaseSectionElement()
-    abstract class SectionFooter: BaseSectionElement()
-
-    abstract class SectionContentHandler {
-        abstract fun getItemCount(): Int
-        abstract fun getContentCellJavaClassName(sectionNumber: Int, positionInSection: Int): String
-    }
-
     fun build(lambda: SectionedRecyclerViewAdapter.() -> Unit) {
         lambda()
     }

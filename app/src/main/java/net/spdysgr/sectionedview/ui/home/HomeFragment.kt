@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import net.spdysgr.sectionedview.databinding.FragmentHomeBinding
 import net.spdysgr.sectionedview.databinding.FragmentHomeCellBinding
 import net.spdysgr.sectionedview.databinding.FragmentHomeHeaderBinding
-import net.spdysgr.sectionedview.sectioned_recyclerview.SectionElementClickListener
-import net.spdysgr.sectionedview.sectioned_recyclerview.SectionedRecyclerViewAdapter
+import net.spdysgr.sectionedview.sectioned_recyclerview.*
 
 class HomeFragment : Fragment() {
 
@@ -54,7 +53,7 @@ class HomeFragment : Fragment() {
     }
 
     class HomeSectionHeaderHolderView(val viewBinding: FragmentHomeHeaderBinding): RecyclerView.ViewHolder(viewBinding.root)
-    inner class HomeSectionHeader: SectionedRecyclerViewAdapter.SectionHeader() {
+    inner class HomeSectionHeader: SectionHeader() {
         override fun bindViewHolder(holder: RecyclerView.ViewHolder, sectionNumber: Int, positionInSection: Int?) {
             if(holder is HomeSectionHeaderHolderView) {
                 val text = "Header of Section No.$sectionNumber."
@@ -68,7 +67,7 @@ class HomeFragment : Fragment() {
     }
 
     class HomeSectionContentCellHolderView(val viewBinding: FragmentHomeCellBinding): RecyclerView.ViewHolder(viewBinding.root)
-    inner class HomeSectionContentCell(private val listener: SectionElementClickListener?): SectionedRecyclerViewAdapter.SectionContentCell() {
+    inner class HomeSectionContentCell(private val listener: SectionElementClickListener?): SectionContentCell() {
         override fun bindViewHolder(holder: RecyclerView.ViewHolder, sectionNumber: Int, positionInSection: Int?) {
             if(holder is HomeSectionContentCellHolderView) {
                 val text = "Section No.$sectionNumber, Position $positionInSection"
@@ -90,7 +89,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    inner class HomeSectionContentHandler: SectionedRecyclerViewAdapter.SectionContentHandler() {
+    inner class HomeSectionContentHandler: SectionContentHandler() {
         override fun getItemCount(): Int {
             return 5
         }

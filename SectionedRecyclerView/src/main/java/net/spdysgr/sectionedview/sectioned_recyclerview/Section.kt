@@ -1,11 +1,11 @@
 package net.spdysgr.sectionedview.sectioned_recyclerview
 
 class Section {
-    var sectionHeader: SectionedRecyclerViewAdapter.SectionHeader? = null
-    var sectionContentCellList: MutableList<SectionedRecyclerViewAdapter.SectionContentCell> = mutableListOf()
-    var sectionFooter: SectionedRecyclerViewAdapter.SectionFooter? = null
+    var sectionHeader: SectionHeader? = null
+    var sectionContentCellList: MutableList<SectionContentCell> = mutableListOf()
+    var sectionFooter: SectionFooter? = null
 
-    var sectionContentHandler: SectionedRecyclerViewAdapter.SectionContentHandler? = null
+    var sectionContentHandler: SectionContentHandler? = null
 
     fun hasHeader(): Boolean {
         return sectionHeader?.let{ true } ?: false
@@ -19,23 +19,23 @@ class Section {
         return sectionFooter?.let{ true } ?: false
     }
 
-    fun getSectionContentCell(javaClassName: String): SectionedRecyclerViewAdapter.SectionContentCell? {
+    fun getSectionContentCell(javaClassName: String): SectionContentCell? {
         return sectionContentCellList.firstOrNull { it.javaClass.name == javaClassName }
     }
 
-    fun header(newSectionHeader: SectionedRecyclerViewAdapter.SectionHeader) {
+    fun header(newSectionHeader: SectionHeader) {
         sectionHeader = newSectionHeader
     }
 
-    fun cell(newSectionContentCell: SectionedRecyclerViewAdapter.SectionContentCell) {
+    fun cell(newSectionContentCell: SectionContentCell) {
         sectionContentCellList.add(newSectionContentCell)
     }
 
-    fun footer(newSectionFooter: SectionedRecyclerViewAdapter.SectionFooter) {
+    fun footer(newSectionFooter: SectionFooter) {
         sectionFooter = newSectionFooter
     }
 
-    fun contentHandler(newSectionContentHandler: SectionedRecyclerViewAdapter.SectionContentHandler) {
+    fun contentHandler(newSectionContentHandler: SectionContentHandler) {
         sectionContentHandler = newSectionContentHandler
     }
 }
