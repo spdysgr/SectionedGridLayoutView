@@ -51,7 +51,7 @@ apply plugin: "maven"
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository url: "file:///Users/satoshun/Projects/maven"
+            repository url: "file://$repo"
             pom.version = '0.0.1'
             pom.groupId = 'net.spdysgr.sectionedview.sectioned_recyclerview'
             pom.artifactId = 'sectioned_recyclerview'
