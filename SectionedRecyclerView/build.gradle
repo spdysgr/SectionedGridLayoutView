@@ -43,3 +43,18 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
+
+def repo = new File(rootDir, "repository")
+
+apply plugin: "maven"
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository url: "file:///Users/satoshun/Projects/maven"
+            pom.version = '0.0.1'
+            pom.groupId = 'net.spdysgr.sectionedview.sectioned_recyclerview'
+            pom.artifactId = 'sectioned_recyclerview'
+        }
+    }
+}
